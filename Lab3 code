@@ -1,0 +1,147 @@
+import java.util.Scanner;
+import java.util.*;
+
+public class Main {
+
+  public static void main(String args[]) {
+    Quiz quiz = new Quiz();
+    int answer;
+    Scanner scan = new Scanner(System.in);
+
+    while (true) {
+      System.out.println("What would you like to do?");
+      System.out.println("1.Add a Question to the Quiz");
+      System.out.println("2.Remove a Question from the Quiz");
+      System.out.println("3.Modify a Question from the quiz");
+      System.out.println("4.Take a Quiz");
+      System.out.println("5.Quit");
+      answer = scan.nextInt();
+
+      if (answer == 1) {
+        quiz.addQuestion();
+      } else if (answer == 2) {
+        quiz.remove_question();
+      } else if (answer == 3) {
+        quiz.modify_question();
+      } else if (answer == 4) {
+        quiz.give_quiz();
+      } else if (answer == 5) {
+        break;
+      }
+
+    }
+
+  }
+}
+
+class Question {
+  private String Question_text;
+  private String Question_answer;
+  private int Level_of_Difficulty;
+
+  public Question(String QuesText,String QuesAns,int Diff){
+    Question_text=QuesText;
+    Question_answer=QuesAns;
+   Level_of_Difficulty=Diff;
+  }
+
+  void setQuestion_text(String i1){
+    this.Question_text=i1;
+  }
+    public String getQuestion_text(){
+    return this.Question_text;
+  }
+  void setQuestion_answer(String i2){
+    this.Question_answer=i2;
+  }
+  public String getQuestion_answer(){
+    return this.Question_answer;
+  }
+  void setLevel_of_Difficulty(int i3){
+    this.Level_of_Difficulty=i3;
+  }
+  public int getLevel_of_Difficulty(){
+    return this.Level_of_Difficulty;
+  }
+
+}
+
+public class Quiz {
+  String inputQtext;
+  String inputAns;
+  int inputDiffi;
+  int input4;
+  String input5;
+  int answer_check;
+  Scanner sc = new Scanner(System.in);
+  ArrayList<Question> wordList = new ArrayList<>();
+
+  public void addQuestion(){
+    sc = new Scanner(System.in);
+    System.out.println("What is the Question Text?");
+    inputQtext=sc.nextLine();
+    System.out.println("What is the Answer?");
+    inputAns=sc.nextLine();
+    System.out.println("How Difficult(1-3)?");
+    sc = new Scanner(System.in);
+    inputDiffi=sc.nextInt();
+    wordList.add(new Question(inputQtext, inputAns, inputDiffi));
+  }
+
+  public void remove_question() {
+    sc = new Scanner(System.in);
+    System.out.println("Choose the question to remove?");
+    int index = 0;
+    for (Question question: wordList) {
+      System.out.println(index + ". " + question.getQuestion_text());
+      index++;
+    }
+    int toRemove = sc.nextInt();
+    wordList.remove(toRemove);
+  }
+
+  public void modify_question() {
+    
+    sc = new Scanner(System.in);
+    System.out.println("Choose the question to modify?");
+    int index = 0;
+    for (Question question: wordList) {
+      System.out.println(index + ". " + question.getQuestion_text());
+      index++;
+    }
+    int toModify = sc.nextInt();
+
+    System.out.println("What is the question Text?");
+    sc = new Scanner(System.in);
+    String text = sc.nextLine();
+    System.out.println("What is the answer?");
+    String answer = sc.nextLine();
+    System.out.println("How Difficult (1-3)?");
+    sc = new Scanner(System.in);
+    int dif = sc.nextInt();
+
+    Question question = wordList.get(toModify);
+    question.setQuestion_text(text);
+    question.setQuestion_answer(answer);
+    question.setLevel_of_Difficulty(dif);
+
+  }
+
+  public void give_quiz() {
+    sc = new Scanner(System.in);
+    int index = 0;
+    int points = 0;
+    for (Question question: wordList) {
+      System.out.println(index + ". " + question.getQuestion_text());
+      String answer = sc.nextLine();
+      if (answer.equals(question.getQuestion_answer())) {
+        points++;
+        System.out.println("Correct");
+      } else {
+        System.out.println("Incorrect");
+      }
+    }
+    System.out.println("You got " + points + " out of " + wordList.size());
+  }
+
+}
